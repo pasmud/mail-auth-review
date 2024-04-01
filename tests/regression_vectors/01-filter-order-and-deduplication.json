@@ -1,0 +1,24 @@
+{
+  "title": "Sorted unique filters preserve the order of selected fields",
+  "headers": [
+    "Authentication-Results: Z.Edge.Example; dkim=fail\n",
+    "Authentication-Results: middle.example; dmarc=pass\n",
+    "Authentication-Results: a.edge.example; spf=neutral\n"
+  ],
+  "servers": ["Z.EDGE.EXAMPLE", "A.EDGE.EXAMPLE", "z.edge.example"],
+  "expected": {
+    "server_filter": ["a.edge.example", "z.edge.example"], "total_fields": 3, "excluded_fields": 1,
+    "fields": [
+      {
+        "line": 1, "authserv_id": "Z.Edge.Example", "version": "1", "status": "parsed",
+        "claims": [{"method": "dkim", "result": "fail", "method_version": "1", "reason": null, "properties": []}],
+        "diagnostics": []
+      },
+      {
+        "line": 3, "authserv_id": "a.edge.example", "version": "1", "status": "parsed",
+        "claims": [{"method": "spf", "result": "neutral", "method_version": "1", "reason": null, "properties": []}],
+        "diagnostics": []
+      }
+    ]
+  }
+}

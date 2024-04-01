@@ -128,4 +128,15 @@ python -m ruff check .
 python -m ruff format --check .
 ```
 
+### Offline regression vectors
+
+The synthetic header blocks in `tests/regression_vectors/` exercise exact
+reporter selection, multiple reporting IDs, header folding and boundaries,
+quoted values, malformed-clause recovery, and independent SPF, DKIM, and
+DMARC outcomes. Each vector supplies the expected selected fields, ordered
+claims, and diagnostics. These tests check reported text only.
+
+Run the corpus with `python -m pytest -q tests/test_regression_vectors.py`.
+Use `-k` with a filename slug to select a single vector.
+
 Licensed under the [MIT License](LICENSE).
