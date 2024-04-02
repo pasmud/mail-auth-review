@@ -1,0 +1,15 @@
+{
+  "title": "An asterisk in a filter matches only a literal asterisk",
+  "headers": [
+    "Authentication-Results: mx.lab.example; dkim=pass\n",
+    "Authentication-Results: *.lab.example; none\n"
+  ],
+  "servers": ["*.LAB.EXAMPLE"],
+  "expected": {
+    "server_filter": ["*.lab.example"], "total_fields": 2, "excluded_fields": 1,
+    "fields": [{
+      "line": 2, "authserv_id": "*.lab.example", "version": "1", "status": "none",
+      "claims": [], "diagnostics": []
+    }]
+  }
+}
