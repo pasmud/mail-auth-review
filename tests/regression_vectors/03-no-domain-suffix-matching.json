@@ -1,0 +1,16 @@
+{
+  "title": "A reporter suffix does not select its subdomain",
+  "headers": [
+    "Authentication-Results: sub.edge.example; spf=fail\n",
+    "Authentication-Results: edge.example; spf=pass\n"
+  ],
+  "servers": ["edge.example"],
+  "expected": {
+    "server_filter": ["edge.example"], "total_fields": 2, "excluded_fields": 1,
+    "fields": [{
+      "line": 2, "authserv_id": "edge.example", "version": "1", "status": "parsed",
+      "claims": [{"method": "spf", "result": "pass", "method_version": "1", "reason": null, "properties": []}],
+      "diagnostics": []
+    }]
+  }
+}
