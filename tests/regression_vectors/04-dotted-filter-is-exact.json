@@ -1,0 +1,16 @@
+{
+  "title": "A dotted filter selects only the reporter with a trailing dot",
+  "headers": [
+    "Authentication-Results: mx.example; spf=pass\n",
+    "Authentication-Results: MX.Example.; dmarc=fail\n"
+  ],
+  "servers": ["mx.example."],
+  "expected": {
+    "server_filter": ["mx.example."], "total_fields": 2, "excluded_fields": 1,
+    "fields": [{
+      "line": 2, "authserv_id": "MX.Example.", "version": "1", "status": "parsed",
+      "claims": [{"method": "dmarc", "result": "fail", "method_version": "1", "reason": null, "properties": []}],
+      "diagnostics": []
+    }]
+  }
+}
