@@ -1,0 +1,16 @@
+{
+  "title": "An escaped quote is decoded before exact reporter selection",
+  "headers": [
+    "Authentication-Results: \"Lab \\\"A\\\"\"; dkim=pass\n",
+    "Authentication-Results: \"Lab A\"; dkim=fail\n"
+  ],
+  "servers": ["lab \"a\""],
+  "expected": {
+    "server_filter": ["lab \"a\""], "total_fields": 2, "excluded_fields": 1,
+    "fields": [{
+      "line": 1, "authserv_id": "Lab \"A\"", "version": "1", "status": "parsed",
+      "claims": [{"method": "dkim", "result": "pass", "method_version": "1", "reason": null, "properties": []}],
+      "diagnostics": []
+    }]
+  }
+}
