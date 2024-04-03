@@ -1,0 +1,16 @@
+{
+  "title": "Spaces inside a quoted reporter ID are significant",
+  "headers": [
+    "Authentication-Results: lab; none\n",
+    "Authentication-Results: \" Lab \"; spf=pass\n"
+  ],
+  "servers": [" LAB "],
+  "expected": {
+    "server_filter": [" lab "], "total_fields": 2, "excluded_fields": 1,
+    "fields": [{
+      "line": 2, "authserv_id": " Lab ", "version": "1", "status": "parsed",
+      "claims": [{"method": "spf", "result": "pass", "method_version": "1", "reason": null, "properties": []}],
+      "diagnostics": []
+    }]
+  }
+}
