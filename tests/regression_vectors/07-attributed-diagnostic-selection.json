@@ -1,0 +1,16 @@
+{
+  "title": "Attributed diagnostics obey the same exact reporter filter",
+  "headers": [
+    "Authentication-Results: relay.example; spf=pass (unfinished\n",
+    "Authentication-Results: mx.example (no separator)\n"
+  ],
+  "servers": ["MX.EXAMPLE"],
+  "expected": {
+    "server_filter": ["mx.example"], "total_fields": 2, "excluded_fields": 1,
+    "fields": [{
+      "line": 2, "authserv_id": "mx.example", "version": "1", "status": "invalid",
+      "claims": [],
+      "diagnostics": [{"code": "missing-results", "message": "expected a semicolon and a result clause", "clause": null}]
+    }]
+  }
+}
