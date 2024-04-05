@@ -1,0 +1,16 @@
+{
+  "title": "An unattributed diagnostic remains when no reporter matches",
+  "headers": [
+    "Authentication-Results: relay.example; spf=pass\n",
+    "Authentication-Results: relay.example extra; dmarc=pass\n"
+  ],
+  "servers": ["absent.example"],
+  "expected": {
+    "server_filter": ["absent.example"], "total_fields": 2, "excluded_fields": 1,
+    "fields": [{
+      "line": 2, "authserv_id": null, "version": null, "status": "invalid",
+      "claims": [],
+      "diagnostics": [{"code": "invalid-authserv", "message": "expected an authserv-id and optional version", "clause": null}]
+    }]
+  }
+}
