@@ -1,0 +1,17 @@
+{
+  "title": "A reporter and its version can start on continuation lines",
+  "headers": [
+    "Authentication-Results:\r\n",
+    "\tMX.Example\r\n",
+    "  0001; dmarc=pass\r\n"
+  ],
+  "servers": ["mx.example"],
+  "expected": {
+    "server_filter": ["mx.example"], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "MX.Example", "version": "1", "status": "parsed",
+      "claims": [{"method": "dmarc", "result": "pass", "method_version": "1", "reason": null, "properties": []}],
+      "diagnostics": []
+    }]
+  }
+}
