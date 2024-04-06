@@ -1,0 +1,22 @@
+{
+  "title": "Non-ASCII result bytes prevent attribution under a filter",
+  "headers": [
+    "Authentication-Results: relay.example; dkim=fail reason=\"café\"\n",
+    "Authentication-Results: mx.example; none\n"
+  ],
+  "servers": ["mx.example"],
+  "expected": {
+    "server_filter": ["mx.example"], "total_fields": 2, "excluded_fields": 0,
+    "fields": [
+      {
+        "line": 1, "authserv_id": null, "version": null, "status": "invalid",
+        "claims": [],
+        "diagnostics": [{"code": "non-ascii", "message": "Authentication-Results must be ASCII", "clause": null}]
+      },
+      {
+        "line": 2, "authserv_id": "mx.example", "version": "1", "status": "none",
+        "claims": [], "diagnostics": []
+      }
+    ]
+  }
+}
