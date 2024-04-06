@@ -1,0 +1,19 @@
+{
+  "title": "Unfolding preserves spaces and tabs inside a quoted value",
+  "headers": [
+    "Authentication-Results: mx.example; dkim=fail header.s=\"slot \r\n",
+    " \tblue\"\r\n"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "dkim", "result": "fail", "method_version": "1", "reason": null,
+        "properties": [{"name": "header.s", "value": "slot  \tblue"}]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
