@@ -1,0 +1,21 @@
+{
+  "title": "Folds at method-version and property boundaries parse",
+  "headers": [
+    "Authentication-Results: mx.example; DKIM/\n",
+    "\t02 =\n",
+    " PASS HEADER.\n",
+    "\tD= signer.example\n"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "dkim", "result": "pass", "method_version": "2", "reason": null,
+        "properties": [{"name": "header.d", "value": "signer.example"}]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
