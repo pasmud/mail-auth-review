@@ -1,0 +1,24 @@
+{
+  "title": "Quoted and bare forms of a selected ID keep both claims",
+  "headers": [
+    "Authentication-Results: \"edge.example\"; dmarc=fail\n",
+    "Authentication-Results: other.example; dmarc=none\n",
+    "Authentication-Results: EDGE.EXAMPLE; dmarc=pass\n"
+  ],
+  "servers": ["edge.example"],
+  "expected": {
+    "server_filter": ["edge.example"], "total_fields": 3, "excluded_fields": 1,
+    "fields": [
+      {
+        "line": 1, "authserv_id": "edge.example", "version": "1", "status": "parsed",
+        "claims": [{"method": "dmarc", "result": "fail", "method_version": "1", "reason": null, "properties": []}],
+        "diagnostics": []
+      },
+      {
+        "line": 3, "authserv_id": "EDGE.EXAMPLE", "version": "1", "status": "parsed",
+        "claims": [{"method": "dmarc", "result": "pass", "method_version": "1", "reason": null, "properties": []}],
+        "diagnostics": []
+      }
+    ]
+  }
+}
