@@ -1,0 +1,17 @@
+{
+  "title": "A header-looking continuation stays part of its unrelated field",
+  "headers": [
+    "X-Synthetic: fixture\n",
+    "\tAuthentication-Results: mx.example; spf=fail\n",
+    "aUtHeNtIcAtIoN-rEsUlTs: mx.example; spf=pass\n"
+  ],
+  "servers": ["mx.example"],
+  "expected": {
+    "server_filter": ["mx.example"], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 3, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{"method": "spf", "result": "pass", "method_version": "1", "reason": null, "properties": []}],
+      "diagnostics": []
+    }]
+  }
+}
