@@ -1,0 +1,27 @@
+{
+  "title": "A whitespace-only continuation does not end the header block",
+  "headers": [
+    "Authentication-Results: mx.example; spf=pass\n",
+    " \t\n",
+    "\t; dkim=fail\n",
+    "Authentication-Results: relay.example; none\n"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 2, "excluded_fields": 0,
+    "fields": [
+      {
+        "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+        "claims": [
+          {"method": "spf", "result": "pass", "method_version": "1", "reason": null, "properties": []},
+          {"method": "dkim", "result": "fail", "method_version": "1", "reason": null, "properties": []}
+        ],
+        "diagnostics": []
+      },
+      {
+        "line": 4, "authserv_id": "relay.example", "version": "1", "status": "none",
+        "claims": [], "diagnostics": []
+      }
+    ]
+  }
+}
