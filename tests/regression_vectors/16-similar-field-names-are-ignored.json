@@ -1,0 +1,17 @@
+{
+  "title": "Similar header names are ignored even for a selected ID",
+  "headers": [
+    "ARC-Authentication-Results: 1; mx.example; spf=pass\n",
+    "Authentication-Results-Original: mx.example; spf=fail\n",
+    "Authentication-Results: mx.example; dmarc=none\n"
+  ],
+  "servers": ["mx.example"],
+  "expected": {
+    "server_filter": ["mx.example"], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 3, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{"method": "dmarc", "result": "none", "method_version": "1", "reason": null, "properties": []}],
+      "diagnostics": []
+    }]
+  }
+}
