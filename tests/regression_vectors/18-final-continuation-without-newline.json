@@ -1,0 +1,26 @@
+{
+  "title": "EOF preserves a final continuation without a newline",
+  "headers": [
+    "Authentication-Results: relay.example; none\n",
+    "Authentication-Results: mx.example; spf=pass\n",
+    " smtp.helo=relay.example"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 2, "excluded_fields": 0,
+    "fields": [
+      {
+        "line": 1, "authserv_id": "relay.example", "version": "1", "status": "none",
+        "claims": [], "diagnostics": []
+      },
+      {
+        "line": 2, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+        "claims": [{
+          "method": "spf", "result": "pass", "method_version": "1", "reason": null,
+          "properties": [{"name": "smtp.helo", "value": "relay.example"}]
+        }],
+        "diagnostics": []
+      }
+    ]
+  }
+}
