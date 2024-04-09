@@ -15,6 +15,7 @@ Status = Literal["parsed", "partial", "none", "invalid", "unsupported-version"]
 _KEYWORD = r"[A-Za-z0-9][A-Za-z0-9_-]*"
 _TOKEN = r"[A-Za-z0-9!#$%&'*+.^_`{|}~-]+"
 _QUOTED = r'"(?:[^"\\]|\\.)*"'
+_MAILBOX_DOMAIN = r"[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*"
 _PREFIX = re.compile(
     rf"[ \t]*(?P<server>{_QUOTED}|{_TOKEN})(?:[ \t]+(?P<version>[0-9]+))?[ \t]*"
 )
@@ -24,7 +25,7 @@ _RESULT = re.compile(
 )
 _ASSIGNMENT = re.compile(
     rf"[ \t]+(?:(?P<ptype>{_KEYWORD})[ \t]*\.[ \t]*(?P<property>{_KEYWORD})|(?P<reason>(?i:reason)))"
-    rf'[ \t]*=[ \t]*(?P<value>{_QUOTED}|[^ \t"=\\]+)(?=[ \t]|$)'
+    rf'[ \t]*=[ \t]*(?P<value>{_QUOTED}(?P<domain>@{_MAILBOX_DOMAIN})?|[^ \t"=\\]+)(?=[ \t]|$)'
 )
 
 
@@ -128,15 +129,19 @@ def _parse_claim(clause: str) -> Claim:
         if not assignment:
             raise _SyntaxError("expected reason=value or property-type.name=value")
         value = assignment["value"]
+        has_domain = assignment["domain"] is not None
         if assignment["reason"]:
             if reason is not None or properties:
                 raise _SyntaxError("reason must appear at most once, before properties")
-            if not value.startswith('"') and not re.fullmatch(_TOKEN, value):
+            if has_domain or (
+                not value.startswith('"') and not re.fullmatch(_TOKEN, value)
+            ):
                 raise _SyntaxError("reason must be a token or quoted string")
             reason = _unquote(value)
         else:
             name = f"{assignment['ptype']}.{assignment['property']}".lower()
-            properties.append(Property(name, _unquote(value)))
+            # These quotes belong to the mailbox, not to the whole value.
+            properties.append(Property(name, value if has_domain else _unquote(value)))
         pos = assignment.end()
     return Claim(method, result, version, reason, tuple(properties))
 

@@ -86,9 +86,11 @@ data in real messages; handle reports accordingly.
 The parser covers a practical ASCII subset of Authentication-Results syntax:
 unfolding, nested comments, quoted strings and escapes, method versions, and
 reason and property assignments. Quoted values and simple bare property
-values (including unquoted mailboxes) are retained as text; their internal
-syntax and semantics are not validated. Composite values such as a quoted
-local part followed by an unquoted domain are not supported. Semicolons in
+values (including unquoted mailboxes) are retained as text. A property such
+as `smtp.mailfrom="night shift"@sender.example` keeps the mailbox's local-part
+quotes and escapes. This form requires a contiguous `@` and an ASCII domain
+made of dot-separated labels; domain literals are not supported in this form.
+The parser does not validate mailbox or domain semantics. Semicolons in
 comments and quotes do not split clauses. Empty clauses, including a trailing
 semicolon, are diagnosed rather than treated as results.
 

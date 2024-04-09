@@ -51,6 +51,45 @@ def test_comments_are_boundaries_not_token_glue():
     assert [issue.clause for issue in field.diagnostics] == [1, 2]
 
 
+def test_quoted_local_part_is_preserved_as_part_of_the_mailbox():
+    field = parse(
+        rb'mx.example; spf=pass smtp.mailfrom="ops; \"night\""@Sender.Example'
+        rb' smtp.helo="relay.example"; dmarc=fail header.from=other.example'
+    )
+    assert field.status == "parsed"
+    assert field.claims == (
+        Claim(
+            "spf",
+            "pass",
+            "1",
+            None,
+            (
+                Property("smtp.mailfrom", r'"ops; \"night\""@Sender.Example'),
+                Property("smtp.helo", "relay.example"),
+            ),
+        ),
+        Claim("dmarc", "fail", "1", None, (Property("header.from", "other.example"),)),
+    )
+
+
+@pytest.mark.parametrize(
+    "assignment",
+    [
+        b'smtp.mailfrom="ops"@',
+        b'smtp.mailfrom="ops"@sender..example',
+        b'smtp.mailfrom="ops"(comment)@sender.example',
+        b'reason="ops"@sender.example',
+    ],
+)
+def test_malformed_or_misplaced_composite_value_is_only_a_clause_error(assignment):
+    field = parse(b"mx.example; spf=pass " + assignment + b"; dmarc=fail")
+    assert field.status == "partial"
+    assert field.claims == (Claim("dmarc", "fail", "1", None, ()),)
+    assert [(issue.code, issue.clause) for issue in field.diagnostics] == [
+        ("invalid-clause", 1)
+    ]
+
+
 def test_malformed_clause_recovery_preserves_order_and_drops_the_entire_bad_claim():
     field = parse(
         b'mx.example; spf=pass; dkim=pass header.d=; ; dkim=fail reason="";'
