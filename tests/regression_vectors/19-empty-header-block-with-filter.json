@@ -1,0 +1,9 @@
+{
+  "title": "An empty header block stays empty with a matching body line",
+  "headers": ["\n", "Authentication-Results: mx.example; spf=pass\n"],
+  "servers": ["MX.EXAMPLE"],
+  "expected": {
+    "server_filter": ["mx.example"], "total_fields": 0, "excluded_fields": 0,
+    "fields": []
+  }
+}
