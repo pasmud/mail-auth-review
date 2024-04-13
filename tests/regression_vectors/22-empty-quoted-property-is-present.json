@@ -1,0 +1,16 @@
+{
+  "title": "An empty quoted property is retained as an empty value",
+  "headers": ["Authentication-Results: mx.example; dkim=neutral header.i=\"\" header.d=signer.example\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "dkim", "result": "neutral", "method_version": "1", "reason": null,
+        "properties": [{"name": "header.i", "value": ""}, {"name": "header.d", "value": "signer.example"}]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
