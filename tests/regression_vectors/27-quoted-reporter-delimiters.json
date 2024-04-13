@@ -1,0 +1,13 @@
+{
+  "title": "Reporter selection retains literal semicolons and parentheses",
+  "headers": ["Authentication-Results: \"Lab; (West)\" (note); spf=neutral\n"],
+  "servers": ["LAB; (WEST)"],
+  "expected": {
+    "server_filter": ["lab; (west)"], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "Lab; (West)", "version": "1", "status": "parsed",
+      "claims": [{"method": "spf", "result": "neutral", "method_version": "1", "reason": null, "properties": []}],
+      "diagnostics": []
+    }]
+  }
+}
