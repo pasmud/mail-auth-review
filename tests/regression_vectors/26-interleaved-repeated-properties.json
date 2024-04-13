@@ -1,0 +1,20 @@
+{
+  "title": "Repeated normalized properties keep their interleaved order",
+  "headers": ["Authentication-Results: mx.example; dkim=fail Header.D=One.Example header.s=blue HEADER.d=Two.Example\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "dkim", "result": "fail", "method_version": "1", "reason": null,
+        "properties": [
+          {"name": "header.d", "value": "One.Example"},
+          {"name": "header.s", "value": "blue"},
+          {"name": "header.d", "value": "Two.Example"}
+        ]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
