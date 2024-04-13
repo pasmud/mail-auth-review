@@ -1,0 +1,25 @@
+{
+  "title": "Mailbox local-part quotes differ from whole-value quotes",
+  "headers": [
+    "Authentication-Results: mx.example; spf=pass smtp.mailfrom=\"slot; \\\"two\\\"\"@Sender.Example;\n",
+    " dkim=pass header.i=\"fixture@Sender.Example\"\n"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [
+        {
+          "method": "spf", "result": "pass", "method_version": "1", "reason": null,
+          "properties": [{"name": "smtp.mailfrom", "value": "\"slot; \\\"two\\\"\"@Sender.Example"}]
+        },
+        {
+          "method": "dkim", "result": "pass", "method_version": "1", "reason": null,
+          "properties": [{"name": "header.i", "value": "fixture@Sender.Example"}]
+        }
+      ],
+      "diagnostics": []
+    }]
+  }
+}
