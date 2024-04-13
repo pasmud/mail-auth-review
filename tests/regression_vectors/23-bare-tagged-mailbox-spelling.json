@@ -1,0 +1,16 @@
+{
+  "title": "Bare mailbox tags and mixed case are retained verbatim",
+  "headers": ["Authentication-Results: mx.example; SPF=PASS SMTP.MailFrom=Fixture+TAG@Sender.Example\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "spf", "result": "pass", "method_version": "1", "reason": null,
+        "properties": [{"name": "smtp.mailfrom", "value": "Fixture+TAG@Sender.Example"}]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
