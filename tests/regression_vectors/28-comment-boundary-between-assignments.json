@@ -1,0 +1,21 @@
+{
+  "title": "An escaped close in a nested comment remains inside it",
+  "headers": [
+    "Authentication-Results: mx.example; spf=pass smtp.helo=relay.example(outer(inner\\); note) end)smtp.mailfrom=sender.example\n"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "spf", "result": "pass", "method_version": "1", "reason": null,
+        "properties": [
+          {"name": "smtp.helo", "value": "relay.example"},
+          {"name": "smtp.mailfrom", "value": "sender.example"}
+        ]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
