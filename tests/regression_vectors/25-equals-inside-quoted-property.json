@@ -1,0 +1,16 @@
+{
+  "title": "An equals sign inside quotes is property data",
+  "headers": ["Authentication-Results: mx.example; dkim=pass header.b=\"Sample==\" header.d=signer.example\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "dkim", "result": "pass", "method_version": "1", "reason": null,
+        "properties": [{"name": "header.b", "value": "Sample=="}, {"name": "header.d", "value": "signer.example"}]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
