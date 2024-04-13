@@ -1,0 +1,21 @@
+{
+  "title": "Escaped quote and final backslash preserve clause boundaries",
+  "headers": [
+    "Authentication-Results: mx.example; dkim=fail header.s=\"a\\\";b\\\\\"; dmarc=pass\n"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [
+        {
+          "method": "dkim", "result": "fail", "method_version": "1", "reason": null,
+          "properties": [{"name": "header.s", "value": "a\";b\\"}]
+        },
+        {"method": "dmarc", "result": "pass", "method_version": "1", "reason": null, "properties": []}
+      ],
+      "diagnostics": []
+    }]
+  }
+}
