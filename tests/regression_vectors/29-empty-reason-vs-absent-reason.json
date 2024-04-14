@@ -1,0 +1,19 @@
+{
+  "title": "An explicit empty reason differs from an absent reason",
+  "headers": ["Authentication-Results: mx.example; dkim=fail ReAsOn=\"\" header.d=signer.example; spf=fail\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [
+        {
+          "method": "dkim", "result": "fail", "method_version": "1", "reason": "",
+          "properties": [{"name": "header.d", "value": "signer.example"}]
+        },
+        {"method": "spf", "result": "fail", "method_version": "1", "reason": null, "properties": []}
+      ],
+      "diagnostics": []
+    }]
+  }
+}
