@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 from .headers import HeaderError, read_auth_fields
+from .results import parse_field
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -22,8 +23,13 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     print("Reported Authentication-Results only; authenticity not verified.")
-    for field in fields:
-        print(f"Line {field.line}: {field.value!r}")
+    for raw_field in fields:
+        field = parse_field(raw_field)
+        print(f"Line {field.line}: {field.authserv_id!r} [{field.status}]")
+        for claim in field.claims:
+            print(f"  {claim.method}={claim.result}")
+        for issue in field.diagnostics:
+            print(f"  {issue.code}: {issue.message}")
     if not fields:
         print("No Authentication-Results fields found.")
     return 0
