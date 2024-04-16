@@ -1,0 +1,13 @@
+{
+  "title": "An untracked clause still conflicts with a later none marker",
+  "headers": ["Authentication-Results: mx.example; auth=pass; none; dmarc=pass\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "invalid",
+      "claims": [],
+      "diagnostics": [{"code": "mixed-none", "message": "none must be the only result clause", "clause": 2}]
+    }]
+  }
+}
