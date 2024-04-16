@@ -75,6 +75,16 @@ shown field has `line` (one-based physical starting line), `authserv_id`,
 field-level issue). Header property values and reasons may contain personal
 data in real messages; handle reports accordingly.
 
+For a compact triage view, add `--format summary` to the review command.
+This groups the shown fields by case-insensitive reporting ID in
+first-appearance order and lists their starting lines. Each row counts
+accepted SPF, DKIM, and DMARC `method=result` claims, including duplicates and
+across method versions. It also counts fields with diagnostics, including those
+in the separate unattributed group. `--server` uses the same selection rules as
+the detailed output. Use text or JSON to see individual claims, versions,
+properties, reasons, and diagnostics. Counts do not rank or establish trust in
+reporters and are not an authentication verdict.
+
 | Status | Meaning |
 | --- | --- |
 | `parsed` | All clauses parsed; the claim list is empty if none were SPF, DKIM, or DMARC. |

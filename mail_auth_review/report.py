@@ -1,6 +1,7 @@
 """Select reporting IDs and render deterministic offline review output."""
 
 import json
+from collections import Counter, defaultdict
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 
@@ -44,7 +45,7 @@ def render_json(report: Report) -> str:
     return json.dumps(asdict(report), ensure_ascii=True, indent=2)
 
 
-def render_text(report: Report) -> str:
+def _preamble(report: Report) -> list[str]:
     lines = [
         report.notice,
         (
@@ -62,7 +63,45 @@ def render_text(report: Report) -> str:
         field.authserv_id is not None for field in report.fields
     ):
         lines.append("No fields matched the reporting server filter.")
+    return lines
 
+
+def render_summary(report: Report) -> str:
+    """Count reported claims by visible reporter, without inferring a verdict."""
+    lines = _preamble(report)
+    if not report.fields:
+        return "\n".join(lines)
+
+    groups: dict[str | None, list[ResultField]] = defaultdict(list)
+    for field in report.fields:
+        reporter = field.authserv_id
+        groups[None if reporter is None else reporter.lower()].append(field)
+
+    lines.append("Reporter summary (counts of reported method=result claims):")
+    for reporter, fields in groups.items():
+        label = (
+            "unattributed"
+            if reporter is None
+            else f"authserv-id={json.dumps(reporter)}"
+        )
+        locations = ",".join(str(field.line) for field in fields)
+        counts = Counter(
+            (claim.method, claim.result) for field in fields for claim in field.claims
+        )
+        outcomes = ", ".join(
+            f"{method}={result} x{count}"
+            for (method, result), count in sorted(counts.items())
+        )
+        diagnosed = sum(bool(field.diagnostics) for field in fields)
+        lines.append(
+            f"  {label} lines={locations}: {outcomes or 'no tracked claims'}; "
+            f"fields with diagnostics={diagnosed}"
+        )
+    return "\n".join(lines)
+
+
+def render_text(report: Report) -> str:
+    lines = _preamble(report)
     for field in report.fields:
         label = (
             "unattributed"

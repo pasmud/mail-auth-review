@@ -88,6 +88,58 @@ def test_no_fields_and_no_matching_fields_are_distinct():
     assert b"No fields matched the reporting server filter." in no_match.stdout
 
 
+def test_summary_groups_reported_results_and_keeps_diagnostic_only_fields():
+    result = cli(
+        "--format",
+        "summary",
+        "-",
+        data=(
+            b"Authentication-Results: MX.Receiver.Example; spf=pass reason=example"
+            b" smtp.mailfrom=robot@sender.example; dkim=pass header.d=; ; spf=fail\n"
+            b"Authentication-Results: relay.example; spf=fail; dmarc=custom\n"
+            b"Authentication-Results: mx.receiver.example; spf/2=PASS; dkim=fail\n"
+            b"Authentication-Results: mx.receiver.example 2; spf=pass\n"
+            b"Authentication-Results: ; spf=pass\n"
+            b"Authentication-Results: idle.example; none\n"
+        ),
+    )
+    assert result.returncode == 0
+    assert result.stderr == b""
+    assert result.stdout.decode().splitlines() == [
+        "Reported claims only; this review does not verify authenticity or who wrote a field.",
+        "Authentication-Results: 6 found, 6 shown, 0 excluded.",
+        "Reporter summary (counts of reported method=result claims):",
+        '  authserv-id="mx.receiver.example" lines=1,3,4: dkim=fail x1, spf=fail x1, '
+        "spf=pass x2; fields with diagnostics=2",
+        '  authserv-id="relay.example" lines=2: dmarc=custom x1, spf=fail x1; fields with diagnostics=0',
+        "  unattributed lines=5: no tracked claims; fields with diagnostics=1",
+        '  authserv-id="idle.example" lines=6: no tracked claims; fields with diagnostics=0',
+    ]
+
+
+def test_summary_counts_only_fields_shown_by_the_server_filter():
+    result = cli(
+        "--format",
+        "summary",
+        "--server",
+        "LAB RELAY",
+        "-",
+        data=(
+            b"Authentication-Results: lab.example; spf=pass\n"
+            b'Authentication-Results: "Lab Relay"; spf=fail\n'
+            b"Authentication-Results: ; spf=pass\n"
+        ),
+    )
+    assert result.returncode == 0
+    assert result.stdout.decode().splitlines()[1:] == [
+        "Authentication-Results: 3 found, 2 shown, 1 excluded.",
+        'Server filter: "lab relay"',
+        "Reporter summary (counts of reported method=result claims):",
+        '  authserv-id="lab relay" lines=2: spf=fail x1; fields with diagnostics=0',
+        "  unattributed lines=3: no tracked claims; fields with diagnostics=1",
+    ]
+
+
 def test_input_and_usage_errors_write_to_stderr_only(tmp_path):
     malformed = cli("--format", "json", "-", data=b"not a header\n")
     missing = cli(tmp_path / "missing.eml")

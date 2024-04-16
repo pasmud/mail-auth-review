@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 from .headers import HeaderError, read_auth_fields
-from .report import render_json, render_text, review
+from .report import render_json, render_summary, render_text, review
 
 
 def _server(value: str) -> str:
@@ -17,6 +17,7 @@ def _server(value: str) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
+    renderers = {"text": render_text, "json": render_json, "summary": render_summary}
     parser = argparse.ArgumentParser(
         prog="mail-auth-review",
         description="Review SPF, DKIM, and DMARC claims in saved email headers offline.",
@@ -33,7 +34,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--format",
-        choices=("text", "json"),
+        choices=renderers,
         default="text",
         help="output format (default: text)",
     )
@@ -49,7 +50,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     report = review(fields, args.server)
-    print(render_json(report) if args.format == "json" else render_text(report))
+    print(renderers[args.format](report))
     return 0
 
 
