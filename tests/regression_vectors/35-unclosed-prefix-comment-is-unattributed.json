@@ -1,0 +1,13 @@
+{
+  "title": "An unclosed prefix comment leaves the field unattributed",
+  "headers": ["Authentication-Results: relay.example (unfinished; spf=pass\n"],
+  "servers": ["mx.example"],
+  "expected": {
+    "server_filter": ["mx.example"], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": null, "version": null, "status": "invalid",
+      "claims": [],
+      "diagnostics": [{"code": "invalid-structure", "message": "unterminated comment", "clause": null}]
+    }]
+  }
+}
