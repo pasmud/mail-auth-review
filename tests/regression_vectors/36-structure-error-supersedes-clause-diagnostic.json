@@ -1,0 +1,13 @@
+{
+  "title": "A stray closing parenthesis supersedes clause diagnostics",
+  "headers": ["Authentication-Results: mx.example; dkim=pass header.d=; spf=pass; dmarc=fail)\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "invalid",
+      "claims": [],
+      "diagnostics": [{"code": "invalid-structure", "message": "unexpected closing parenthesis", "clause": null}]
+    }]
+  }
+}
