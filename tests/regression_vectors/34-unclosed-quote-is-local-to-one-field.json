@@ -1,0 +1,24 @@
+{
+  "title": "An unclosed quote suppresses only its own field's claims",
+  "headers": [
+    "Authentication-Results: mx.example; spf=pass; dkim=fail\n",
+    " header.s=\"unfinished\n",
+    "Authentication-Results: mx.example; dmarc=fail\n"
+  ],
+  "servers": ["mx.example"],
+  "expected": {
+    "server_filter": ["mx.example"], "total_fields": 2, "excluded_fields": 0,
+    "fields": [
+      {
+        "line": 1, "authserv_id": "mx.example", "version": "1", "status": "invalid",
+        "claims": [],
+        "diagnostics": [{"code": "invalid-structure", "message": "unterminated quoted string", "clause": null}]
+      },
+      {
+        "line": 3, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+        "claims": [{"method": "dmarc", "result": "fail", "method_version": "1", "reason": null, "properties": []}],
+        "diagnostics": []
+      }
+    ]
+  }
+}
