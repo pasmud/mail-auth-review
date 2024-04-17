@@ -1,0 +1,16 @@
+{
+  "title": "A tab inside a folded quoted ID prevents attribution",
+  "headers": [
+    "Authentication-Results: \"Lab\r\n",
+    "\tRelay\"; dkim=pass\r\n"
+  ],
+  "servers": ["lab relay"],
+  "expected": {
+    "server_filter": ["lab relay"], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": null, "version": null, "status": "invalid",
+      "claims": [],
+      "diagnostics": [{"code": "invalid-authserv", "message": "authserv-id must be printable and nonblank", "clause": null}]
+    }]
+  }
+}
