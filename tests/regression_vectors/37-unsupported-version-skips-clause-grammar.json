@@ -1,0 +1,13 @@
+{
+  "title": "An unsupported version skips interpretation of framed clauses",
+  "headers": ["Authentication-Results: mx.example 0002; spf=pass; dkim=fail header.d=\n"],
+  "servers": ["mx.example"],
+  "expected": {
+    "server_filter": ["mx.example"], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "2", "status": "unsupported-version",
+      "claims": [],
+      "diagnostics": [{"code": "unsupported-version", "message": "only authres version 1 is interpreted", "clause": null}]
+    }]
+  }
+}
