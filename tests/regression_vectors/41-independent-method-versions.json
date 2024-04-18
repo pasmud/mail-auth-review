@@ -1,0 +1,17 @@
+{
+  "title": "Zero and nonzero method versions do not change authres version",
+  "headers": ["Authentication-Results: mx.example 01; spf/000=neutral; dkim/0012=pass; dmarc=fail\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [
+        {"method": "spf", "result": "neutral", "method_version": "0", "reason": null, "properties": []},
+        {"method": "dkim", "result": "pass", "method_version": "12", "reason": null, "properties": []},
+        {"method": "dmarc", "result": "fail", "method_version": "1", "reason": null, "properties": []}
+      ],
+      "diagnostics": []
+    }]
+  }
+}
