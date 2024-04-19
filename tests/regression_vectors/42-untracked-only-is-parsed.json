@@ -1,0 +1,12 @@
+{
+  "title": "Valid untracked methods yield parsed fields without claims",
+  "headers": ["Authentication-Results: mx.example; iprev=pass policy.iprev=192.0.2.5; auth=pass\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [], "diagnostics": []
+    }]
+  }
+}
