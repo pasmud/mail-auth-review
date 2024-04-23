@@ -1,0 +1,10 @@
+From: Lab Sender <robot@sender.example>
+To: Review Desk <triage@recipient.example>
+Subject: Synthetic authentication review
+Authentication-Results: mx.recipient.example 1 (review sample);
+ spf=pass smtp.mailfrom=robot@sender.example;
+ dkim=pass header.d=sender.example header.s=sample;
+ dmarc=pass header.from=sender.example
+Authentication-Results: relay.recipient.example; none
+
+This synthetic message body is outside the reviewed header block.

@@ -1,6 +1,9 @@
 import json
 import subprocess
 import sys
+from pathlib import Path
+
+EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
 
 
 def cli(*args, data=b""):
@@ -98,3 +101,36 @@ def test_input_and_usage_errors_write_to_stderr_only(tmp_path):
     assert b"invalid header field" in malformed.stderr
     assert b"missing.eml" in missing.stderr
     assert b"printable ASCII authserv-id" in bad_option.stderr
+
+
+def test_documented_message_reports_three_claims_and_excludes_relay():
+    result = cli("--server", "MX.Recipient.Example", EXAMPLES / "review.eml")
+    assert result.returncode == 0
+    assert result.stdout.decode().splitlines()[1:] == [
+        "Authentication-Results: 2 found, 1 shown, 1 excluded.",
+        'Server filter: "mx.recipient.example"',
+        'Line 4: authserv-id="mx.recipient.example" version=1 [parsed]',
+        '  spf=pass smtp.mailfrom="robot@sender.example"',
+        '  dkim=pass header.d="sender.example" header.s="sample"',
+        '  dmarc=pass header.from="sender.example"',
+    ]
+
+
+def test_documented_diagnostics_keep_only_intact_claims():
+    result = cli(
+        "--format", "json", "--server", "lab relay", EXAMPLES / "diagnostics.headers"
+    )
+    assert result.returncode == 0
+    fields = json.loads(result.stdout)["fields"]
+    assert [(f["line"], f["status"], f["diagnostics"][0]["code"]) for f in fields] == [
+        (2, "partial", "invalid-clause"),
+        (6, "invalid", "invalid-structure"),
+        (7, "unsupported-version", "unsupported-version"),
+        (8, "invalid", "invalid-authserv"),
+    ]
+    assert [[c["method"] for c in f["claims"]] for f in fields] == [
+        ["spf", "dmarc"],
+        [],
+        [],
+        [],
+    ]

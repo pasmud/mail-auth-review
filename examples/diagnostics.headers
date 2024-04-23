@@ -1,0 +1,8 @@
+Subject: Synthetic parser diagnostics
+Authentication-Results: "Lab Relay";
+ spf=softfail reason="synthetic note; no live lookup" smtp.mailfrom=sender.example;
+ dkim=pass header.d=;
+ dmarc=fail header.from=sender.example
+Authentication-Results: "Lab Relay"; dkim=pass (unclosed comment
+Authentication-Results: "Lab Relay" 2; spf=pass
+Authentication-Results: ; none
