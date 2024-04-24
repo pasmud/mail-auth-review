@@ -1,0 +1,16 @@
+{
+  "title": "An unfamiliar result keyword is lowercased and retained",
+  "headers": ["Authentication-Results: mx.example; dmarc=Local_Review-2 header.from=fixture.example\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "dmarc", "result": "local_review-2", "method_version": "1", "reason": null,
+        "properties": [{"name": "header.from", "value": "fixture.example"}]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
