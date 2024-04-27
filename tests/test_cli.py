@@ -186,3 +186,46 @@ def test_documented_diagnostics_keep_only_intact_claims():
         [],
         [],
     ]
+
+
+def test_provenance_fixture_summarizes_conflicting_reporters():
+    result = cli("--format", "summary", EXAMPLES / "conflicting-reporters.headers")
+    assert result.returncode == 0
+    assert result.stderr == b""
+    assert result.stdout.decode().splitlines()[1:] == [
+        "Authentication-Results: 3 found, 3 shown, 0 excluded.",
+        "Reporter summary (counts of reported method=result claims):",
+        '  authserv-id="mx.recipient.example" lines=3,10: dkim=fail x1, dmarc=fail x1, '
+        "dmarc=pass x1, spf=fail x1; fields with diagnostics=0",
+        '  authserv-id="relay.recipient.example" lines=7: dmarc=pass x1, spf=pass x1; '
+        "fields with diagnostics=0",
+    ]
+
+
+def test_provenance_fixture_filter_retains_both_claims_from_same_reported_id():
+    result = cli(
+        "--format",
+        "json",
+        "--server",
+        "mx.recipient.example",
+        EXAMPLES / "conflicting-reporters.headers",
+    )
+    assert result.returncode == 0
+    assert result.stderr == b""
+    report = json.loads(result.stdout)
+    assert (report["total_fields"], report["excluded_fields"]) == (3, 1)
+    fields = report["fields"]
+    assert [(field["line"], field["authserv_id"]) for field in fields] == [
+        (3, "MX.Recipient.Example"),
+        (10, "mx.recipient.example"),
+    ]
+    dmarc = [
+        (claim["result"], claim["properties"])
+        for field in fields
+        for claim in field["claims"]
+        if claim["method"] == "dmarc"
+    ]
+    assert dmarc == [
+        ("fail", [{"name": "header.from", "value": "sender.example"}]),
+        ("pass", [{"name": "header.from", "value": "sender.example"}]),
+    ]

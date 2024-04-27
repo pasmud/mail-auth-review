@@ -1,0 +1,11 @@
+Subject: Synthetic provenance review
+From: Example Sender <notice@sender.example>
+Authentication-Results: MX.Recipient.Example;
+ spf=fail smtp.mailfrom=sender.example;
+ dkim=fail header.d=sender.example;
+ dmarc=fail header.from=sender.example
+Authentication-Results: relay.recipient.example;
+ spf=pass smtp.mailfrom=sender.example;
+ dmarc=pass header.from=sender.example
+Authentication-Results: mx.recipient.example;
+ dmarc=pass header.from=sender.example

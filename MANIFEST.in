@@ -1,1 +1,2 @@
 include examples/diagnostics.headers examples/review.eml
+include examples/conflicting-reporters.headers examples/provenance.md

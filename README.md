@@ -38,6 +38,11 @@ malformed DKIM clause. The unclosed comment in the next field suppresses that
 field's claims. The report also shows an unsupported version and an
 unattributed diagnostic.
 
+The [offline provenance worksheet](examples/provenance.md) uses a saved
+header fixture with conflicting claims, including two fields that claim the
+same receiver ID. It shows how to inventory the claims and what independent
+evidence would be needed to attribute a field.
+
 ## Input and selection
 
 - Pass one local file path or `-` for stdin. A header-only file can end at EOF,
