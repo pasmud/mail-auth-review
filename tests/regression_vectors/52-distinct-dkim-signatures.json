@@ -1,0 +1,25 @@
+{
+  "title": "Two DKIM passes retain separate selectors and signing domains",
+  "headers": [
+    "Authentication-Results: mx.example; dkim=pass header.d=one.example header.s=blue;\n",
+    " dkim=pass header.d=two.example header.s=green\n"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [
+        {
+          "method": "dkim", "result": "pass", "method_version": "1", "reason": null,
+          "properties": [{"name": "header.d", "value": "one.example"}, {"name": "header.s", "value": "blue"}]
+        },
+        {
+          "method": "dkim", "result": "pass", "method_version": "1", "reason": null,
+          "properties": [{"name": "header.d", "value": "two.example"}, {"name": "header.s", "value": "green"}]
+        }
+      ],
+      "diagnostics": []
+    }]
+  }
+}
