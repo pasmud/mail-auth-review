@@ -1,0 +1,25 @@
+{
+  "title": "DMARC none is a claim alongside a reported DKIM permerror",
+  "headers": [
+    "Authentication-Results: mx.example; dkim=permerror reason=\"malformed key record\" header.d=signer.example;\n",
+    " dmarc=none header.from=author.example\n"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [
+        {
+          "method": "dkim", "result": "permerror", "method_version": "1", "reason": "malformed key record",
+          "properties": [{"name": "header.d", "value": "signer.example"}]
+        },
+        {
+          "method": "dmarc", "result": "none", "method_version": "1", "reason": null,
+          "properties": [{"name": "header.from", "value": "author.example"}]
+        }
+      ],
+      "diagnostics": []
+    }]
+  }
+}
