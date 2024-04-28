@@ -1,0 +1,13 @@
+{
+  "title": "A nondecimal method version drops only that clause",
+  "headers": ["Authentication-Results: mx.example; dkim/v2=pass; dkim/2=fail\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "partial",
+      "claims": [{"method": "dkim", "result": "fail", "method_version": "2", "reason": null, "properties": []}],
+      "diagnostics": [{"code": "invalid-clause", "message": "expected a method=result pair", "clause": 1}]
+    }]
+  }
+}
