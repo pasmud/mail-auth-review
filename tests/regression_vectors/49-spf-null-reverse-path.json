@@ -1,0 +1,19 @@
+{
+  "title": "A null reverse path and a HELO identity are both retained",
+  "headers": ["Authentication-Results: mx.example; spf=pass smtp.mailfrom=<> smtp.helo=relay.example\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "spf", "result": "pass", "method_version": "1", "reason": null,
+        "properties": [
+          {"name": "smtp.mailfrom", "value": "<>"},
+          {"name": "smtp.helo", "value": "relay.example"}
+        ]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
