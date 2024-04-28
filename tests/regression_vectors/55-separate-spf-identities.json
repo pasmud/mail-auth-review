@@ -1,0 +1,22 @@
+{
+  "title": "Separate SPF checks retain their own outcomes and identities",
+  "headers": ["Authentication-Results: mx.example; spf=none smtp.helo=relay.example; spf=neutral smtp.mailfrom=sender.example\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [
+        {
+          "method": "spf", "result": "none", "method_version": "1", "reason": null,
+          "properties": [{"name": "smtp.helo", "value": "relay.example"}]
+        },
+        {
+          "method": "spf", "result": "neutral", "method_version": "1", "reason": null,
+          "properties": [{"name": "smtp.mailfrom", "value": "sender.example"}]
+        }
+      ],
+      "diagnostics": []
+    }]
+  }
+}
