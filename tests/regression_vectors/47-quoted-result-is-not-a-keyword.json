@@ -1,0 +1,13 @@
+{
+  "title": "A quoted result does not parse as a result keyword",
+  "headers": ["Authentication-Results: mx.example; spf=\"pass\" smtp.helo=relay.example\n"],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "invalid",
+      "claims": [],
+      "diagnostics": [{"code": "invalid-clause", "message": "expected a method=result pair", "clause": 1}]
+    }]
+  }
+}
