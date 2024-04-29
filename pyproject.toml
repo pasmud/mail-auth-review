@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mail-auth-review"
+version = "0.1.0"
+description = "Offline review of reported SPF, DKIM, and DMARC claims in saved email headers"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=9", "ruff>=0.15"]
+
+[project.scripts]
+mail-auth-review = "mail_auth_review.__main__:main"
+
+[tool.setuptools]
+packages = ["mail_auth_review"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B", "UP"]

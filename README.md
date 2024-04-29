@@ -98,4 +98,17 @@ semicolon, are diagnosed rather than treated as results.
 | `1` | File could not be read, header framing was malformed, or a header-block limit was exceeded. Diagnostic on stderr; no report. |
 | `2` | Invalid command-line arguments. Usage error on stderr; no report. |
 
+## Install and develop
+
+The checkout can run directly via `python -m mail_auth_review`. To install the
+`mail-auth-review` command from this checkout, run `python -m pip install .`
+in an activated virtual environment. For development, use the `dev` extra:
+
+```sh
+python -m pip install '.[dev]'
+python -m pytest -q
+python -m ruff check .
+python -m ruff format --check .
+```
+
 Licensed under the [MIT License](LICENSE).
