@@ -1,0 +1,23 @@
+{
+  "title": "A folded standalone none stays distinct from a result claim",
+  "headers": [
+    "Authentication-Results: mx.example;\r\n",
+    "\t(no checks) NoNe (end)\r\n",
+    "Authentication-Results: relay.example; dkim=none\r\n"
+  ],
+  "servers": ["mx.example", "relay.example"],
+  "expected": {
+    "server_filter": ["mx.example", "relay.example"], "total_fields": 2, "excluded_fields": 0,
+    "fields": [
+      {
+        "line": 1, "authserv_id": "mx.example", "version": "1", "status": "none",
+        "claims": [], "diagnostics": []
+      },
+      {
+        "line": 3, "authserv_id": "relay.example", "version": "1", "status": "parsed",
+        "claims": [{"method": "dkim", "result": "none", "method_version": "1", "reason": null, "properties": []}],
+        "diagnostics": []
+      }
+    ]
+  }
+}
