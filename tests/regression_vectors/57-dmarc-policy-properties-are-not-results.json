@@ -1,0 +1,22 @@
+{
+  "title": "A DMARC permerror retains its reason and policy properties",
+  "headers": [
+    "Authentication-Results: mx.example; dmarc=permerror reason=BadPolicy\n",
+    " policy.disposition=none header.from=author.example\n"
+  ],
+  "servers": [],
+  "expected": {
+    "server_filter": [], "total_fields": 1, "excluded_fields": 0,
+    "fields": [{
+      "line": 1, "authserv_id": "mx.example", "version": "1", "status": "parsed",
+      "claims": [{
+        "method": "dmarc", "result": "permerror", "method_version": "1", "reason": "BadPolicy",
+        "properties": [
+          {"name": "policy.disposition", "value": "none"},
+          {"name": "header.from", "value": "author.example"}
+        ]
+      }],
+      "diagnostics": []
+    }]
+  }
+}
